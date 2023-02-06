@@ -1,5 +1,3 @@
-import bcrypt from 'bcrypt';
-
 const createUser = (email, password, name) => async ({ userPostgresRepository }) => {
 
     if (!email) {

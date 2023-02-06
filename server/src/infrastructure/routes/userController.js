@@ -1,14 +1,14 @@
 import { Router } from 'express';
 import { v4 as uuid } from "uuid";
-import userPostgresRepository from '../database/repositories/userPostgresRepository.js';
+// import userPostgresRepository from '../database/repositories/userPostgresRepository.js';
 import client from "../database/database.js";
 const router = Router();
 
 // Get user
 router.get('/', async (req, res, next) => {
-    const userId = 1;
-    const response = await userPostgresRepository.findByIdOrThrow(userId);
-    res.json(response);
+    //TODO change this
+    const response = await client.query(`SELECT * FROM "User"`)
+    res.json(response.rows);
 });
 
 router.post('/', async (req, res, next) => {
