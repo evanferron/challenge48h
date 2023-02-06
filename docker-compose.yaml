@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  nginx-proxy:
+      image: jwilder/nginx-proxy
+      ports:
+        - "80:80"
+      volumes:
+        - /var/run/docker.sock:/tmp/docker.sock:ro
+  postgres:
+      build: ./postgres
+      environment:
+          PGPASSWORD: 'postgres'
+          PGUSER: 'postgres'
+          POSTGRES_PASSWORD: 'postgres'
+          POSTGRES_USER: 'postgres'
+      ports:
+        - 5432:5432
+  api:
+    build: ./server
+    container_name: api_backend
+    environment:
+          PORT: '4000'
+          NODE_END: 'development'
+    ports:
+      - '4000:4000'
+    volumes:
+      - ./server:/usr/src/api
