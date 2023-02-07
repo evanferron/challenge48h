@@ -1,4 +1,7 @@
 import userController from './src/infrastructure/routes/userController.js';
+import articleController from './src/infrastructure/routes/articleController.js';
+import commandController from './src/infrastructure/routes/commandController.js';
+import shoppingController from './src/infrastructure/routes/shoppingController.js';
 import express, { Router } from 'express'
 import passport from 'passport'
 import cors from 'cors';
@@ -37,6 +40,9 @@ app.use(cookieParser());
 //     return router;
 // }
 app.use('/user/', userController)
+app.use('/article/', articleController)
+app.use('/command/', commandController)
+app.use('/shopping/', shoppingController)
 
 // set Passport middleware for auth
 // app.use(passport.initialize());
