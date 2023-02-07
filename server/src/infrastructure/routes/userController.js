@@ -11,15 +11,16 @@ router.get('/', async (req, res, next) => {
     res.json(response.rows);
 });
 
-router.post('/create', async (req, res, next) => {
-    const { email, password, name } = req.body
+// Create user
+router.post('/', async (req, res, next) => {
+    const { email, password, name, address } = req.body
 
     //TODO : Hash password
-    console.log(email, password, name)
+    console.log(email, password, name, address)
 
-    const text = `INSERT INTO "User"(id, passwordhash, name, email) VALUES($1, $2, $3, $4)`;
+    const text = `INSERT INTO "User"(id, passwordhash, name, email, address) VALUES($1, $2, $3, $4, $5)`;
 
-    const values = [uuid(), password, name, email];
+    const values = [uuid(), password, name, email, address];
     await client.query(text, values, (err) => {
         if (err) {
             console.log(err.stack)
@@ -28,50 +29,41 @@ router.post('/create', async (req, res, next) => {
             console.log(res.rows[0])
         }
     })
-
 })
 
+// Login user
 router.post('/login', async (req, res, next) => {
-    const { email, password, name } = req.body
+    const { email, password } = req.body;
 
-    //TODO : Hash password
-    console.log(email, password, name)
+    const text = `SELECT * FROM "User" WHERE email = $1 AND passwordhash = $2`;
 
-    //const text = `INSERT INTO "User"(id, passwordhash, name, email) VALUES($1, $2, $3, $4)`;
-
-    const values = [uuid(), password, name, email];
-    await client.query(text, values, (err) => {
+    const values = [email, password];
+    await client.query(text, values, (err, result) => {
         if (err) {
             console.log(err.stack)
         } else {
-            res.json({ message: "created" })
-            console.log(res.rows[0])
+            res.json(result.rows[0])
+            console.log(result.rows[0])
         }
     })
-
 })
 
+// Logout user
 router.post('/logout', async (req, res, next) => {
-    const { email, password, name } = req.body
+    const { email, password } = req.body;
 
-    //TODO : Hash password
-    console.log(email, password, name)
+    const text = `SELECT * FROM "User" WHERE email = $1 AND passwordhash = $2`;
 
-    //???
-    //const text = `INSERT INTO "User"(id, passwordhash, name, email) VALUES($1, $2, $3, $4)`;
-
-    const values = [uuid(), password, name, email];
-    await client.query(text, values, (err) => {
+    const values = [email, password];
+    await client.query(text, values, (err, result) => {
         if (err) {
             console.log(err.stack)
         } else {
-            res.json({ message: "created" })
-            console.log(res.rows[0])
+            //TODO: Logout user
+            res.json(result.rows[0])
+            console.log(result.rows[0])
         }
     })
-
 })
-
-
 
 export default router;
